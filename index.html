@@ -35,20 +35,20 @@
 <script>
   var fireballSize = 22, wizardSpeed = 3, wizardWidth = 70;
 
-  var getFireballSpeed = function (left) {
+  function getFireballSpeed (left) {
     if (left) return 5;
     return 2;
   }
 
-  var getWizardHeight = function () {
+  function getWizardHeight () {
     return 1.337 * wizardWidth;
   }
 
-  var getWizardX = function (width) {
+  function getWizardX (width) {
     return width/2 - wizardWidth/2;
   }
 
-  var getWizardY = function (height) {
+  function getWizardY (height) {
     return height/3 - getWizardHeight();
   }
 
