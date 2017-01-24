@@ -14,8 +14,6 @@ function drawCloud(ctx, x, y, width, height, needText) {
 
   // Право
   ctx.bezierCurveTo(x + width, y + 10, x + width + 100, y + stepVer * 2, x + width, y + height - 10);
-  // ctx.bezierCurveTo(x + width, y + 10, x + width + 50, y + stepVer , x + width + 30, y + stepVer * 2);
-  // ctx.bezierCurveTo(x + width + 30, y + stepVer * 2, x + width + 50, y + stepVer * 3, x + width, y + height - 10);
 
   // Низ
   ctx.bezierCurveTo(x + width, y + height - 10, x + stepHor * 5, y + 35 + height, x + stepHor * 4, y + height - 5);
@@ -56,14 +54,14 @@ function whatColor(iName) {
 }
 
 // Нахождение максимума
-function findMaximun(times){
+function findMaximun(times) {
   var maxTime = times[0];
-    for (var i = 1; i < times.length; i++) {
-      if (maxTime < times[i]) {
-        maxTime = times[i];
-      }
+  for (var i = 1; i < times.length; i++) {
+    if (maxTime < times[i]) {
+      maxTime = times[i];
     }
-    return maxTime;
+  }
+  return maxTime;
 }
 
 window.renderStatistics = function (ctx, names, times) {
@@ -92,6 +90,3 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillText(names[i], x + 80 + gap * i, 260);
   }
 };
-
-var canvas = document.querySelector('canvas');
-window.renderStatistics(canvas.getContext('2d'), names, times);
