@@ -30,12 +30,8 @@ function toggleSetupView() {
   return list.contains('invisible') ? list.remove('invisible') : list.add('invisible');
 }
 
-document.querySelector('.setup-open').addEventListener('click', function (evt) {
-  toggleSetupView();
-});
-document.querySelector('.setup-close').addEventListener('click', function (evt) {
-  toggleSetupView();
-});
+document.querySelector('.setup-open').addEventListener('click', toggleSetupView);
+document.querySelector('.setup-close').addEventListener('click', toggleSetupView);
 
 // Определение цвета
 function generateColor(evt, property, colorsArray) {
