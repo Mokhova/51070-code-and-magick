@@ -25,20 +25,16 @@ var fireballColors = [
 ];
 
 // Открыть/закрыть профиль волшебника
-function toggleSetupView(property) {
-  var overlay = document.querySelector('.setup');
-  if (overlay.classList.contains(property)) {
-    overlay.classList.remove(property);
-  } else {
-    overlay.classList.add(property);
-  }
+function toggleSetupView() {
+  var list = document.querySelector('.setup').classList;
+  return list.contains('invisible') ? list.remove('invisible') : list.add('invisible');
 }
 
 document.querySelector('.setup-open').addEventListener('click', function (evt) {
-  toggleSetupView('invisible');
+  toggleSetupView();
 });
 document.querySelector('.setup-close').addEventListener('click', function (evt) {
-  toggleSetupView('invisible');
+  toggleSetupView();
 });
 
 // Определение цвета
