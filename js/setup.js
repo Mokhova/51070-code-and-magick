@@ -1,5 +1,13 @@
 'use strict';
 
+var setup = document.querySelector('.overlay');
+var setupOpen = document.querySelector('.setup-open');
+var setupIcon = setupOpen.querySelector('.setup-open-icon');
+var setupSubmit = setup.querySelector('.setup-submit');
+var setupClose = setup.querySelector('.setup-close');
+var ENTER_KEY_CODE = 13;
+var ESCAPE_KEY_CODE = 27;
+
 // Цвета волшебника
 var wizardCoatColors = [
   'rgb(101, 137, 164)',
@@ -26,12 +34,54 @@ var fireballColors = [
 
 // Открыть/закрыть профиль волшебника
 function toggleSetupView() {
-  var list = document.querySelector('.setup').classList;
+  var list = setup.classList;
   return list.contains('invisible') ? list.remove('invisible') : list.add('invisible');
 }
 
-document.querySelector('.setup-open').addEventListener('click', toggleSetupView);
-document.querySelector('.setup-close').addEventListener('click', toggleSetupView);
+setupOpen.addEventListener('click', toggleSetupView);
+setupClose.addEventListener('click', toggleSetupView);
+setupSubmit.addEventListener('click', toggleSetupView);
+
+// Открыть/закрыть профиль волшебника с КЛАВИАТУРЫ
+function pressedEnterKey(evt) {
+  return evt.target && evt.keyCode === ENTER_KEY_CODE;
+}
+
+// Если нажали на escape, скрываю оверлей, удалаяю обработчик по escape
+function closeByEscape(evt) {
+  if (evt.keyCode === ESCAPE_KEY_CODE) {
+    setup.classList.add('invisible');
+    toggleARIAPressed();
+    document.removeEventListener('keydown', closeByEscape);
+  }
+}
+
+function toggleARIAPressed() {
+  var pressed = (setupIcon.getAttribute('aria-pressed') === 'true');
+  setupIcon.setAttribute('aria-pressed', !pressed);
+}
+
+function keyToggleSetupView(evt) {
+  if (pressedEnterKey(evt)) {
+    toggleSetupView();
+    toggleARIAPressed();
+  }
+}
+
+setupOpen.addEventListener('keydown', function (evt) {
+  keyToggleSetupView(evt);
+  document.addEventListener('keydown', closeByEscape);
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  keyToggleSetupView(evt);
+});
+
+setupSubmit.addEventListener('keydown', function (evt) {
+  if (pressedEnterKey(evt)) {
+    keyToggleSetupView(evt);
+  }
+});
 
 // Определение цвета
 function generateColor(evt, property, colorsArray) {
@@ -64,4 +114,4 @@ function validateEmpty() {
   }
 }
 
-document.querySelector('.setup-submit').addEventListener('click', validateEmpty);
+setupSubmit.addEventListener('click', validateEmpty);
