@@ -26,13 +26,13 @@
   <div class="demo"></div>
 
   <div class="setup-open">
-    <img src="./img/user-1.jpg" class="setup-open-icon">
+    <img src="./img/user-1.jpg" class="setup-open-icon" role="button" aria-pressed="false" aria-label="Открыть профиль волшебника" tabindex="1">
   </div>
 </header>
 
 <div class="overlay setup invisible">
   <form class="setup-wizard-form">
-    <span class="setup-close">&times;</span>
+    <span class="setup-close" role="button" aria-label="Закрыть профиль волшебника" tabindex="2">&times;</span>
 
     <div class="setup-user">
       <img class="setup-user-pic" src="./img/user-1.jpg" />
@@ -98,7 +98,7 @@
       <div class="setup-artifacts-cell"></div>
     </div>
 
-    <button class="button setup-submit">Сохранить</button>
+    <button class="button setup-submit" role="button" aria-label="Сохранить профиль волшебника" tabindex="3">Сохранить</button>
   </form>
 </div>
 
