@@ -5,8 +5,10 @@ var setupOpen = document.querySelector('.setup-open');
 var setupIcon = setupOpen.querySelector('.setup-open-icon');
 var setupSubmit = setup.querySelector('.setup-submit');
 var setupClose = setup.querySelector('.setup-close');
-var ENTER_KEY_CODE = 13;
 var ESCAPE_KEY_CODE = 27;
+var gamerName = document.querySelector('.setup-user-name');
+gamerName.required = true;
+gamerName.max = 50;
 
 // Цвета волшебника
 var wizardCoatColors = [
@@ -38,75 +40,22 @@ function toggleSetupView() {
   return list.contains('invisible') ? list.remove('invisible') : list.add('invisible');
 }
 
-setupOpen.addEventListener('click', toggleSetupView);
-setupClose.addEventListener('click', toggleSetupView);
-setupSubmit.addEventListener('click', toggleSetupView);
-
-// Открыть/закрыть профиль волшебника с КЛАВИАТУРЫ
-function pressedEnterKey(evt) {
-  return evt.target && evt.keyCode === ENTER_KEY_CODE;
+function keyToggleSetupView(evt) {
+  toggleSetupView();
+  window.toggleARIAPressed(setupIcon);
 }
 
-// Если нажали на escape, скрываю оверлей, удалаяю обработчик по escape
+// Закрытие по escape: скрываю оверлей, удалаяю обработчик по escape
 function closeByEscape(evt) {
   if (evt.keyCode === ESCAPE_KEY_CODE) {
     setup.classList.add('invisible');
-    toggleARIAPressed();
+    window.toggleARIAPressed(setupIcon);
     document.removeEventListener('keydown', closeByEscape);
   }
 }
 
-function toggleARIAPressed() {
-  var pressed = (setupIcon.getAttribute('aria-pressed') === 'true');
-  setupIcon.setAttribute('aria-pressed', !pressed);
-}
-
-function keyToggleSetupView(evt) {
-  if (pressedEnterKey(evt)) {
-    toggleSetupView();
-    toggleARIAPressed();
-  }
-}
-
-setupOpen.addEventListener('keydown', function (evt) {
-  keyToggleSetupView(evt);
-  document.addEventListener('keydown', closeByEscape);
-});
-
-setupClose.addEventListener('keydown', function (evt) {
-  keyToggleSetupView(evt);
-});
-
-setupSubmit.addEventListener('keydown', function (evt) {
-  if (pressedEnterKey(evt)) {
-    keyToggleSetupView(evt);
-  }
-});
-
-// Определение цвета
-function generateColor(evt, property, colorsArray) {
-  var randomCounter = Math.floor(Math.random() * colorsArray.length);
-  evt.currentTarget.style[property] = colorsArray[randomCounter];
-}
-
-document.querySelector('#wizard-coat').addEventListener('click', function (evt) {
-  generateColor(evt, 'fill', wizardCoatColors);
-});
-
-document.querySelector('#wizard-eyes').addEventListener('click', function (evt) {
-  generateColor(evt, 'fill', wizardEyesColors);
-});
-
-document.querySelector('.setup-fireball-wrap').addEventListener('click', function (evt) {
-  generateColor(evt, 'backgroundColor', fireballColors);
-});
-
-// Валидация поля
-var gamerName = document.querySelector('.setup-user-name');
-gamerName.required = true;
-gamerName.max = 50;
-
-function validateEmpty() {
+// Сообщение к невалидному полю
+function validateEmptyMessage() {
   if (gamerName.validity.valueMissing) {
     gamerName.setCustomValidity('Назовись, о великий маг!');
   } else {
@@ -114,4 +63,28 @@ function validateEmpty() {
   }
 }
 
-setupSubmit.addEventListener('click', validateEmpty);
+// Открытие/закрытие по клику
+setupOpen.addEventListener('click', toggleSetupView);
+setupClose.addEventListener('click', toggleSetupView);
+setupSubmit.addEventListener('click', function () {
+  return !gamerName.validity.valid ? validateEmptyMessage() : toggleSetupView;
+});
+
+// Открытие/закрытие по enter
+setupOpen.addEventListener('keydown', function (evt) {
+  window.enterPressHandler(evt, keyToggleSetupView);
+  document.addEventListener('keydown', closeByEscape);
+});
+
+setupSubmit.addEventListener('keydown', function (evt) {
+  return !gamerName.validity.valid ? validateEmptyMessage() : window.enterPressHandler(evt, keyToggleSetupView);
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  window.enterPressHandler(evt, keyToggleSetupView);
+});
+
+// Раскрашивание волшебника: по клику и клавиатуре
+window.colorizeElement(document.querySelector('#wizard-coat'), wizardCoatColors, 'fill');
+window.colorizeElement(document.querySelector('#wizard-eyes'), wizardEyesColors, 'fill');
+window.colorizeElement(document.querySelector('.setup-fireball-wrap'), fireballColors, 'backgroundColor');
