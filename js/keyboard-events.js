@@ -3,12 +3,10 @@
 var ENTER_KEY_CODE = 13;
 
 // По нажатие на enter совершаем переданное действие
-window.enterPressHandler = function (element, action) {
-  element.addEventListener('keydown', function (evt) {
-    if (window.pressedEnterKey(evt)) {
-      action();
-    }
-  });
+window.enterPressHandler = function (evt, action) {
+  if (window.pressedEnterKey(evt)) {
+    action(evt);
+  }
 };
 
 // Ловим нажатие на enter

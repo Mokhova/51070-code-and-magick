@@ -34,17 +34,18 @@ var fireballColors = [
   '#e6e848'
 ];
 
-// Открыть/закрыть профиль волшебника по клику
+// Открыть/закрыть профиль волшебника
 function toggleSetupView() {
   var list = setup.classList;
   return list.contains('invisible') ? list.remove('invisible') : list.add('invisible');
 }
 
-setupOpen.addEventListener('click', toggleSetupView);
-setupClose.addEventListener('click', toggleSetupView);
-setupSubmit.addEventListener('click', toggleSetupView);
+function keyToggleSetupView(evt) {
+  toggleSetupView();
+  window.toggleARIAPressed(setupIcon);
+}
 
-// Если нажали на escape, скрываю оверлей, удалаяю обработчик по escape
+// Закрытие по escape: скрываю оверлей, удалаяю обработчик по escape
 function closeByEscape(evt) {
   if (evt.keyCode === ESCAPE_KEY_CODE) {
     setup.classList.add('invisible');
@@ -53,28 +54,8 @@ function closeByEscape(evt) {
   }
 }
 
-function keyToggleSetupView(evt) {
-  toggleSetupView();
-  window.toggleARIAPressed(setupIcon);
-}
-
-setupOpen.addEventListener('keydown', function (evt) {
-  if (window.pressedEnterKey(evt)) {
-    keyToggleSetupView(evt);
-  }
-  document.addEventListener('keydown', closeByEscape);
-});
-
-window.enterPressHandler(setupClose, keyToggleSetupView);
-window.enterPressHandler(setupSubmit, keyToggleSetupView);
-
-// Раскрашивание волшебника: по клику и клавиатуре
-window.colorizeElement(document.querySelector('#wizard-coat'), wizardCoatColors, 'fill');
-window.colorizeElement(document.querySelector('#wizard-eyes'), wizardEyesColors, 'fill');
-window.colorizeElement(document.querySelector('.setup-fireball-wrap'), fireballColors, 'backgroundColor');
-
-// Валидация поля
-function validateEmpty() {
+// Сообщение к невалидному полю
+function validateEmptyMessage() {
   if (gamerName.validity.valueMissing) {
     gamerName.setCustomValidity('Назовись, о великий маг!');
   } else {
@@ -82,4 +63,36 @@ function validateEmpty() {
   }
 }
 
-setupSubmit.addEventListener('click', validateEmpty);
+// Открытие/закрытие по клику
+setupOpen.addEventListener('click', toggleSetupView);
+setupClose.addEventListener('click', toggleSetupView);
+setupSubmit.addEventListener('click', function () {
+  if (!gamerName.validity.valid) {
+    return validateEmptyMessage();
+  } else {
+    return toggleSetupView;
+  }
+});
+
+// Открытие/закрытие по enter
+setupOpen.addEventListener('keydown', function (evt) {
+  window.enterPressHandler(evt, keyToggleSetupView);
+  document.addEventListener('keydown', closeByEscape);
+});
+
+setupSubmit.addEventListener('keydown', function (evt) {
+  if (!gamerName.validity.valid) {
+    return validateEmptyMessage();
+  } else {
+    return window.enterPressHandler(evt, keyToggleSetupView);
+  }
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  window.enterPressHandler(evt, keyToggleSetupView);
+});
+
+// Раскрашивание волшебника: по клику и клавиатуре
+window.colorizeElement(document.querySelector('#wizard-coat'), wizardCoatColors, 'fill');
+window.colorizeElement(document.querySelector('#wizard-eyes'), wizardEyesColors, 'fill');
+window.colorizeElement(document.querySelector('.setup-fireball-wrap'), fireballColors, 'backgroundColor');

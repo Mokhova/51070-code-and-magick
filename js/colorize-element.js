@@ -10,5 +10,8 @@ window.colorizeElement = function (element, colors, cssProperty) {
   }
 
   element.addEventListener('click', generateColor);
-  window.enterPressHandler(element, generateColor);
+
+  element.addEventListener('keydown', function (evt) {
+    window.enterPressHandler(evt, generateColor);
+  });
 };
