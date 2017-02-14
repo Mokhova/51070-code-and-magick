@@ -67,11 +67,7 @@ function validateEmptyMessage() {
 setupOpen.addEventListener('click', toggleSetupView);
 setupClose.addEventListener('click', toggleSetupView);
 setupSubmit.addEventListener('click', function () {
-  if (!gamerName.validity.valid) {
-    return validateEmptyMessage();
-  } else {
-    return toggleSetupView;
-  }
+  return !gamerName.validity.valid ? validateEmptyMessage() : toggleSetupView;
 });
 
 // Открытие/закрытие по enter
@@ -81,11 +77,7 @@ setupOpen.addEventListener('keydown', function (evt) {
 });
 
 setupSubmit.addEventListener('keydown', function (evt) {
-  if (!gamerName.validity.valid) {
-    return validateEmptyMessage();
-  } else {
-    return window.enterPressHandler(evt, keyToggleSetupView);
-  }
+  return !gamerName.validity.valid ? validateEmptyMessage() : window.enterPressHandler(evt, keyToggleSetupView);
 });
 
 setupClose.addEventListener('keydown', function (evt) {
