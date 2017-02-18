@@ -1,7 +1,7 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Екатерина Мохова](https://up.htmlacademy.ru/javascript/8/user/51070).
-* Наставник: `Иван Долгов`.
+* Наставник: `Евгений Лепёшкин`.
 
 ---
 
