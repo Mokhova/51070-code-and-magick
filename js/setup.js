@@ -5,34 +5,9 @@ var setupOpen = document.querySelector('.setup-open');
 var setupIcon = setupOpen.querySelector('.setup-open-icon');
 var setupSubmit = setup.querySelector('.setup-submit');
 var setupClose = setup.querySelector('.setup-close');
-var ESCAPE_KEY_CODE = 27;
 var gamerName = document.querySelector('.setup-user-name');
 gamerName.required = true;
 gamerName.max = 50;
-
-// Цвета волшебника
-var wizardCoatColors = [
-  'rgb(101, 137, 164)',
-  'rgb(241, 43, 107)',
-  'rgb(146, 100, 161)',
-  'rgb(56, 159, 117)',
-  'rgb(215, 210, 55)',
-  'rgb(0, 0, 0)'
-];
-var wizardEyesColors = [
-  'black',
-  'red',
-  'blue',
-  'yellow',
-  'green'
-];
-var fireballColors = [
-  '#ee4830',
-  '#30a8ee',
-  '#5ce6c0',
-  '#e848d5',
-  '#e6e848'
-];
 
 // Открыть/закрыть профиль волшебника
 function toggleSetupView() {
@@ -42,14 +17,14 @@ function toggleSetupView() {
 
 function keyToggleSetupView(evt) {
   toggleSetupView();
-  window.toggleARIAPressed(setupIcon);
+  window.keyHandler.toggleARIAPressed(setupIcon);
 }
 
 // Закрытие по escape: скрываю оверлей, удалаяю обработчик по escape
 function closeByEscape(evt) {
-  if (evt.keyCode === ESCAPE_KEY_CODE) {
+  if (window.keyHandler.pressedEscapeKey(evt)) {
     setup.classList.add('invisible');
-    window.toggleARIAPressed(setupIcon);
+    window.keyHandler.toggleARIAPressed(setupIcon);
     document.removeEventListener('keydown', closeByEscape);
   }
 }
@@ -72,19 +47,40 @@ setupSubmit.addEventListener('click', function () {
 
 // Открытие/закрытие по enter
 setupOpen.addEventListener('keydown', function (evt) {
-  window.enterPressHandler(evt, keyToggleSetupView);
+  window.keyHandler.enterPressHandler(evt, keyToggleSetupView);
   document.addEventListener('keydown', closeByEscape);
 });
 
 setupSubmit.addEventListener('keydown', function (evt) {
-  return !gamerName.validity.valid ? validateEmptyMessage() : window.enterPressHandler(evt, keyToggleSetupView);
+  return !gamerName.validity.valid ? validateEmptyMessage() : window.keyHandler.enterPressHandler(evt, keyToggleSetupView);
 });
 
 setupClose.addEventListener('keydown', function (evt) {
-  window.enterPressHandler(evt, keyToggleSetupView);
+  window.keyHandler.enterPressHandler(evt, keyToggleSetupView);
 });
 
 // Раскрашивание волшебника: по клику и клавиатуре
-window.colorizeElement(document.querySelector('#wizard-coat'), wizardCoatColors, 'fill');
-window.colorizeElement(document.querySelector('#wizard-eyes'), wizardEyesColors, 'fill');
-window.colorizeElement(document.querySelector('.setup-fireball-wrap'), fireballColors, 'backgroundColor');
+window.setNewColor.colorizeElement(document.querySelector('#wizard-coat'), 'fill', [
+  'rgb(101, 137, 164)',
+  'rgb(241, 43, 107)',
+  'rgb(146, 100, 161)',
+  'rgb(56, 159, 117)',
+  'rgb(215, 210, 55)',
+  'rgb(0, 0, 0)'
+]);
+
+window.setNewColor.colorizeElement(document.querySelector('#wizard-eyes'), 'fill', [
+  'black',
+  'red',
+  'blue',
+  'yellow',
+  'green'
+]);
+
+window.setNewColor.colorizeElement(document.querySelector('.setup-fireball-wrap'), 'backgroundColor', [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+]);
