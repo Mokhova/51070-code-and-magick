@@ -6,6 +6,8 @@
     document.querySelector('.setup-open-icon').focus();
   }
 
+  returnFocusToIcon();
+
   window.initSetup(returnFocusToIcon);
 
   function fillElement(element, color) {

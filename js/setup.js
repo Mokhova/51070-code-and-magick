@@ -53,19 +53,12 @@ window.initSetup = (function () {
       keyCloseSetup(evt);
     });
 
-    document.querySelector('.setup-user-name').addEventListener('keydown', function (evt) {
-      keyCloseSetup(evt);
-    });
-
     setupSubmit.addEventListener('click', function (evt) {
       window.ifValidDo(keyCloseSetup, evt);
     });
 
     // Открытие и закрытие по клику
-    setupOpen.addEventListener('click', function () {
-      toggleSetupView();
-    });
-
+    setupOpen.addEventListener('click', toggleSetupView);
     setupClose.addEventListener('click', toggleSetupView);
     setupSubmit.addEventListener('click', function () {
       window.ifValidDo(toggleSetupView);
